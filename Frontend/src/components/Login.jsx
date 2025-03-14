@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
+
 function Login() {
   const {
     register,
@@ -20,11 +21,15 @@ function Login() {
       .then((res) => {
         console.log(res.data);
         if (res.data) {
-          toast.success("Loggedin Successfully");
+          toast.success("Logged in Successfully");
           document.getElementById("my_modal_3").close();
+
+          // Store the userId and user data in localStorage for future use
+          localStorage.setItem("userId", res.data.user._id); // Ensure your backend returns the user with an _id field
+          localStorage.setItem("Users", JSON.stringify(res.data.user));
+
           setTimeout(() => {
             window.location.reload();
-            localStorage.setItem("Users", JSON.stringify(res.data.user));
           }, 1000);
         }
       })
@@ -36,6 +41,7 @@ function Login() {
         }
       });
   };
+
   return (
     <div>
       <dialog id="my_modal_3" className="modal">
@@ -68,7 +74,7 @@ function Login() {
                 </span>
               )}
             </div>
-            {/* password */}
+            {/* Password */}
             <div className="mt-4 space-y-2">
               <span>Password</span>
               <br />
@@ -98,7 +104,7 @@ function Login() {
                   className="underline text-blue-500 cursor-pointer"
                 >
                   Signup
-                </Link>{" "}
+                </Link>
               </p>
             </div>
           </form>
